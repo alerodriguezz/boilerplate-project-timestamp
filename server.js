@@ -25,6 +25,24 @@ app.get("/api/hello", function (req, res) {
 });
 
 
+// your first API endpoint... 
+app.get("/api/:date", (req, res) => {
+  let dateStr= req.params.date
+
+  let dateObj= new Date(dateStr);
+  
+  if (dateObj.toString() === "Invalid Date") {
+    res.json({ error: "Invalid Date" });
+  } else {
+    res.json({ unix: dateObj.valueOf(), utc: dateObj.toUTCString() });
+  }
+},
+  (req,res) => {
+  res.json({greeting: "hello"});
+});
+
+
+
 
 // listen for requests :)
 var listener = app.listen(process.env.PORT, function () {
