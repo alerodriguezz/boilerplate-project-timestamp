@@ -24,23 +24,34 @@ app.get("/api/hello", function (req, res) {
   res.json({greeting: 'hello API'});
 });
 
+// empty date parameter 
+app.get("/api/", function (req, res) {
+
+  req.string = new Date().toString();
+
+  let dateObj= new Date(req.string);
+  res.json({ unix: dateObj.valueOf(), utc: dateObj.toUTCString() });
+});
 
 // your first API endpoint... 
 app.get("/api/:date", (req, res) => {
   let dateStr= req.params.date
 
   let dateObj= new Date(dateStr);
-  
-  if (dateObj.toString() === "Invalid Date") {
+
+  console.log(dateObj.valueOf())
+
+  if (dateObj.toString() === "Invalid Date" || "") {
     res.json({ error: "Invalid Date" });
   } else {
     res.json({ unix: dateObj.valueOf(), utc: dateObj.toUTCString() });
   }
+
+  
 },
   (req,res) => {
   res.json({greeting: "hello"});
 });
-
 
 
 
