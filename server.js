@@ -36,21 +36,29 @@ app.get("/api/", function (req, res) {
 // your first API endpoint... 
 app.get("/api/:date", (req, res) => {
   let dateStr= req.params.date
+try{
+  //5 digits or more must be a unix time
+  if (/\d{5,}/.test(dateStr)) {
+    dateInt = parseInt(dateStr);
+    //Date regards numbers as unix timestamps, strings are processed differently
+    return res.json({ unix: dateInt, utc: new Date(dateInt).toUTCString() });
 
+  } 
+  else {
   let dateObj= new Date(dateStr);
-
-  console.log(dateObj.valueOf())
-
-  if (dateObj.toString() === "Invalid Date" || "") {
+  if (dateObj.toString() === "Invalid Date") {
     res.json({ error: "Invalid Date" });
+    
   } else {
     res.json({ unix: dateObj.valueOf(), utc: dateObj.toUTCString() });
+    
   }
 
-  
-},
-  (req,res) => {
-  res.json({greeting: "hello"});
+  }
+}
+catch(ex){
+  res.json({ error: "Invalid Date" })
+}
 });
 
 
